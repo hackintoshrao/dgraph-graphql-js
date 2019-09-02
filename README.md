@@ -1,68 +1,130 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Runnning the app 
+```sh
+$ git clone https://github.com/hackintoshrao/dgraph-graphql-js.git
+$ cd dgraph-graphql-js
+$ Install yarn
+$ yarn add apollo-boost react-apollo graphql
+$ yarn start
+```
 
-## Available Scripts
+## Tutorial : Building the App
+```sh
+$ brew install yarn.
+$ yarn global add create-react-app
 
-In the project directory, you can run:
+$ create-react-app dgraph-graphql-basic
 
-### `npm start`
+$  cd dgraph-graphql-basic/
+$  yarn add apollo-boost react-apollo graphql
+$  yarn start
+```
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![visuals](./public/visual-1.png)
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+To improve the project structure, move on to create two directories, both inside the src folder. The first is called components and will hold all our React components. Call the second one styles, that one is for all the CSS files you’ll use.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+App.js is a component, so move it into components. App.css and index.css contain styles, so move them into styles. You also need to change the references to these files in both index.js and App.js accordingly:
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+$ mkdir components
+$ mkdir styles 
+$ mv App.js  components/
+$ mv *css styles/
+```
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Make changes to the path in src/index.js, 
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './styles/index.css'
+import App from './components/App'
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+````
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Make changes to the path in components/App.js
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+import React, { Component } from 'react';
+import logo from '../logo.svg';
+import '../styles/App.css';
+```
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+Your project structure should now look as follows:
 
-### Analyzing the Bundle Size
+![visuals](./public/visual-2.png)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+---
 
-### Making a Progressive Web App
+Install Apollo client, react apollo and graphql libraries
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```sh
+$ yarn add apollo-boost react-apollo graphql
+```
 
-### Advanced Configuration
+Here’s an overview of the packages you just installed:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+- Apollo-boost 
+    - apollo-client: Where all the magic happens
+    - apollo-cache-inmemory: Our recommended cache
+    - apollo-link-http: An Apollo Link for remote data fetching
+    - apollo-link-error: An Apollo Link for error handling
+    - apollo-link-state: An Apollo Link for local state management
+    -  graphql-tag: Exports the gql function for your queries & mutations
+    
+- react-apollo contains the bindings to use Apollo Client with React.
+    
+- graphql contains Facebook’s reference implementation of GraphQL - Apollo Client uses some of its functionality as well.
 
-### Deployment
+---
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+```js
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './styles/index.css'
+import App from './components/App'
+import * as serviceWorker from './serviceWorker';
 
-### `npm run build` fails to minify
+// 1
+import { ApolloProvider } from 'react-apollo'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+// 2
+const httpLink = createHttpLink({
+  uri: 'http://localhost:9000'
+})
+
+// 3
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache()
+})
+
+// 4
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById('root')
+)
+serviceWorker.unregister();
+
+```
+
+You’re importing the required dependencies from the installed packages.
+Here you create the `httpLink` that will connect your ApolloClient instance with the Dgraph's GraphQL API, your GraphQL server will be running on http://localhost:9000.
+Now you instantiate `ApolloClient` by passing in the `httpLink` and a new instance of an `InMemoryCache`.
+Finally you render the root component of your React app. The App is wrapped with the higher-order component ApolloProvider that gets passed the client as a prop.
+
