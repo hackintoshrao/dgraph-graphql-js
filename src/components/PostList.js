@@ -26,10 +26,9 @@ class PostList extends Component {
         {({ loading, error, data }) => {
           if (loading) return <div>Fetching</div>
           if (error) {
-            console.log("my error")
-            console.log(error)
-            return <div>error</div>
-
+            const errorMsg = `Error occured while rendering posts.\nError: ${error}`
+            console.log(errorMsg)
+            return <div>{errorMsg}</div>
           } 
     
           const posts = data.queryPost
