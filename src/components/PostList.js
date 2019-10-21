@@ -29,9 +29,8 @@ class PostList extends Component {
             console.log("my error")
             console.log(error)
             return <div>error</div>
-
           } 
-    
+  
           const posts = data.queryPost
           console.log(data)
           return (
