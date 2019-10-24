@@ -16,8 +16,9 @@ Here are the docs explaining Dgraph's custom GraphQL directives.
 
 Here is how we arrived at the GraphQL type definition for our blog application. 
 
-Step 1: Define your application graph
-Create an illustration with author, country, and blog linked together.
+Step 1: Define your application graph.
+ 
+Note: Create an illustration with author, country, and blog linked together.
 
 Step 2: Translate the application Graph into a GraphQL type definition. 
 
