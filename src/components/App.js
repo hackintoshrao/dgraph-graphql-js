@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import logo from '../logo.svg';
-import '../styles/App.css';
-import PostList from './PostList'
-import Header from './Header'
-import { Switch, Route } from 'react-router-dom'
+import React from "react";
+import "../styles/App.css";
+import PostList from "./PostList";
+import Header from "./Header";
+import Postbox from "./Postbox";
+import { Switch, Route } from "react-router-dom";
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <div className="ph3 pv1 background-gray">
         <Switch>
           <Route exact path="/" component={PostList} />
-          <Route exact path="/create" component={PostList} />
+          <Route exact path="/create" component={Postbox} />
         </Switch>
       </div>
     </div>

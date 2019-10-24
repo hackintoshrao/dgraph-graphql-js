@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 class Header extends Component {
   render() {
@@ -9,16 +9,16 @@ class Header extends Component {
         <div className="flex flex-fixed black">
           <div className="fw7 mr1">Dgraph GraphQL Post</div>
           <Link to="/" className="ml1 no-underline black">
-            Refresh
+            Blog Feed
           </Link>
           <div className="ml1">|</div>
           <Link to="/create" className="ml1 no-underline black">
-            Create Post
+            Create Blog
           </Link>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default withRouter(Header)
+export default withRouter(Header);
