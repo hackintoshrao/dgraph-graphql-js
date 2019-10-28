@@ -2,19 +2,18 @@ import React from "react";
 import "../styles/App.css";
 import PostList from "./PostList";
 import Header from "./Header";
-import Postbox from "./Postbox";
+import CreatePost from "./CreatePost";
 import { Switch, Route } from "react-router-dom";
 
 export default function App() {
   return (
-    <div className="center w85">
+    <section>
       <Header />
-      <div className="ph3 pv1 background-gray">
-        <Switch>
-          <Route exact path="/" component={PostList} />
-          <Route exact path="/create" component={Postbox} />
-        </Switch>
-      </div>
-    </div>
+
+      <Switch>
+        <Route exact path="/" component={PostList} />
+        <Route exact path="/create" component={CreatePost} />
+      </Switch>
+    </section>
   );
 }

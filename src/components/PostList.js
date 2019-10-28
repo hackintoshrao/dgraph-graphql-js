@@ -62,11 +62,11 @@ export default function PostList() {
         }
         const posts = data.queryPost;
         return (
-          <div>
+          <section className="post-list">
             {posts.map(post => (
               <Post key={post.postID} post={post} />
             ))}
-          </div>
+          </section>
         );
       }}
     </Query>
