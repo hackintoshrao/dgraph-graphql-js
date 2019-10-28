@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import Post from "./Post";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
-
 
 /*
 Dgraph's GraphQL layer takes in a GraphQL schema file with the type definitions.
@@ -11,7 +10,7 @@ Then, it autogenerates the queries and mutation APIs for the same.
 The graphql.schema file in the root of the repo contains all the
 GraphQL types which are used as inputs to Dgraph.
 
-From the schema you can see that the GraphQL type for a post look like this, 
+From the schema you can see that the GraphQL type for a post look like this,
 
 type Post {
 	postID: ID!
@@ -51,27 +50,25 @@ const GET_BLOG_POSTS = gql`
   }
 `;
 
-class PostList extends Component {
-  render() {
-    return (
-      <Query query={GET_BLOG_POSTS}>
-        {({ loading, error, data }) => {
-          if (loading) return <div>Fetching</div>;
-          if (error) {
-            return <div>error</div>;
-          }
-          const posts = data.queryPost;
-          return (
-            <div>
-              {posts.map(post => (
-                <Post key={post.postID} post={post} />
-              ))}
-            </div>
-          );
-        }}
-      </Query>
-    );
-  }
+export default function PostList() {
+  return (
+    <Query query={GET_BLOG_POSTS}>
+      {({ loading, error, data }) => {
+        if (loading) {
+          return <div>Fetching Posts...</div>;
+        }
+        if (error) {
+          return <div>Error: {error}</div>;
+        }
+        const posts = data.queryPost;
+        return (
+          <div>
+            {posts.map(post => (
+              <Post key={post.postID} post={post} />
+            ))}
+          </div>
+        );
+      }}
+    </Query>
+  );
 }
-
-export default PostList;
