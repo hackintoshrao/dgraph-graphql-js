@@ -5,7 +5,9 @@ import { withRouter } from "react-router";
 export default withRouter(function Header(props) {
   return (
     <nav class="navbar navbar-expand">
-      <span class="navbar-brand">Dgraph GraphQL Blog</span>
+      <span class="navbar-brand">
+        Dgraph GraphQL Blog
+      </span>
 
       <div class="navbar-collapse">
         <ul class="navbar-nav">
