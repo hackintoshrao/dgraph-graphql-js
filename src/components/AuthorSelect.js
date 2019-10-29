@@ -41,6 +41,7 @@ export default function AuthorSelect({ onChange }) {
 
         return (
           <select
+            id="authorSelect"
             value={value}
             onChange={onSelectboxChange}
             className="form-control"

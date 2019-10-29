@@ -41,18 +41,28 @@ export default function AddPost(props) {
   };
 
   return (
-    <div>
-      <div className="flex flex-column mt3">
+    <form>
+      <div className="form-group">
+        <label htmlFor="authorSelect">Select Author:</label>
         <AuthorSelect onChange={handleChangeAuthor} />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="postTitle">Enter Title:</label>
         <input
-          className="mb2"
+          id="postTitle"
+          className="form-control"
           value={title}
           onChange={e => setTitle(e.target.value)}
           type="text"
           placeholder="Add Title"
         />
+      </div>
+      <div className="form-group">
+        <label htmlFor="postText">Post Content:</label>
         <textarea
-          className="mb2"
+          id="postText"
+          className="form-control"
           rows="15"
           cols="100"
           value={text}
@@ -62,8 +72,16 @@ export default function AddPost(props) {
         />
       </div>
       <Mutation mutation={POST_MUTATION} variables={{ post }}>
-        {postMutation => <button onClick={postMutation}>Submit</button>}
+        {postMutation => (
+          <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={postMutation}
+          >
+            Publish
+          </button>
+        )}
       </Mutation>
-    </div>
+    </form>
   );
 }
