@@ -8,7 +8,9 @@ export default function Post({ post }) {
         <h6 class="card-subtitle mb-2 text-muted">
           by {post.author.name}
         </h6>
-        {post.text}
+        <p class="card-text">
+          {post.text}
+        </p>
       </div>
     </div>
   );

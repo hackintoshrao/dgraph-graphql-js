@@ -7,7 +7,7 @@ import { Switch, Route } from "react-router-dom";
 
 export default function App() {
   return (
-    <div class="container">
+    <div className="container">
       <Header />
 
       <Switch>

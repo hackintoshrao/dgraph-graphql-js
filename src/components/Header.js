@@ -4,19 +4,19 @@ import { withRouter } from "react-router";
 
 export default withRouter(function Header(props) {
   return (
-    <nav class="navbar navbar-expand">
-      <span class="navbar-brand">
+    <nav className="navbar navbar-expand">
+      <span className="navbar-brand">
         Dgraph GraphQL Blog
       </span>
 
-      <div class="navbar-collapse">
-        <ul class="navbar-nav">
-          <li class="nav-item">
+      <div className="navbar-collapse">
+        <ul className="navbar-nav">
+          <li className="nav-item">
             <Link to="/" className="nav-link">
               Feed
             </Link>
           </li>
-          <li class="nav-item">
+          <li className="nav-item">
             <Link to="/create" className="nav-link">
               Add Article
             </Link>
