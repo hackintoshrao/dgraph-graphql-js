@@ -62,7 +62,7 @@ export default function PostList() {
         }
         const posts = data.queryPost;
         return (
-          <div class="row">
+          <div className="row">
             {posts.map(post => (
               <Post key={post.postID} post={post} />
             ))}

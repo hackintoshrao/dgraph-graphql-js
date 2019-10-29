@@ -26,10 +26,10 @@ export default function AddPost(props) {
   const [text, setText] = useState("");
   const [authorId, setAuthorId] = useState("");
 
+  const history = useHistory();
+
   const handleChangeAuthor = (authorName, authorId) =>
     setAuthorId(authorId);
-
-  const onChangeTitle = e => setTitle(e.target.value);
 
   const post = {
     title,
@@ -76,7 +76,11 @@ export default function AddPost(props) {
           <button
               type="submit"
               className="btn btn-primary"
-              onClick={postMutation}
+              onClick={async e => {
+                e.preventDefault();
+                await postMutation();
+                history.push("/");
+              }}
           >
             Publish
           </button>
