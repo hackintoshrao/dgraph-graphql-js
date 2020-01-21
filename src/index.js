@@ -13,7 +13,7 @@ import { BrowserRouter } from "react-router-dom";
 
 // 2
 const httpLink = createHttpLink({
-  uri: "http://35.232.156.2:9000/graphql"
+  uri: "http://localhost:8080/graphql"
 });
 
 // 3

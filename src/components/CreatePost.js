@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import AuthorSelect from "./AuthorSelect";
 
 const POST_MUTATION = gql`
-  mutation addPost($post: PostInput!) {
+  mutation addPost($post: [AddPostInput!]!) {
     addPost(input: $post) {
       post {
         postID
@@ -31,14 +31,14 @@ export default function AddPost(props) {
   const handleChangeAuthor = (authorName, authorId) =>
     setAuthorId(authorId);
 
-  const post = {
+  const post = [{
     title,
     text,
     isPublished: true,
     author: {
       id: authorId
     }
-  };
+  }];
 
   return (
     <form>
