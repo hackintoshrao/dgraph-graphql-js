@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import gql from "graphql-tag";
 import { Mutation } from "react-apollo";
 import { useHistory } from "react-router-dom";
-
+import TagsInput from 'react-tagsinput'
+import 'react-tagsinput/react-tagsinput.css'
 import AuthorSelect from "./AuthorSelect";
 
 const POST_MUTATION = gql`
@@ -25,6 +26,7 @@ export default function AddPost(props) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [authorId, setAuthorId] = useState("");
+  const [tags, setTags] = useState([])
 
   const history = useHistory();
 
@@ -34,21 +36,25 @@ export default function AddPost(props) {
   const post = [{
     title,
     text,
+    tags,
     isPublished: true,
     author: {
       id: authorId
     }
   }];
+  const handleChangeTags = (tagsSet) => {
+    setTags(tagsSet)
+  }
 
   return (
-    <form>
+    <div className="container">
+      <hr />
       <div className="form-group">
-        <label htmlFor="authorSelect">Select Author:</label>
+        <label htmlFor="authorSelect">Author:</label>
         <AuthorSelect onChange={handleChangeAuthor} />
       </div>
-
       <div className="form-group">
-        <label htmlFor="postTitle">Enter Title:</label>
+        <label htmlFor="postTitle">Title:</label>
         <input
           id="postTitle"
           className="form-control"
@@ -59,7 +65,11 @@ export default function AddPost(props) {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="postText">Post Content:</label>
+        <label htmlFor="postTags">Tags:</label>
+        <TagsInput value={tags} onChange={handleChangeTags} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="postText">Content:</label>
         <textarea
           id="postText"
           className="form-control"
@@ -78,6 +88,7 @@ export default function AddPost(props) {
               className="btn btn-primary"
               onClick={async e => {
                 e.preventDefault();
+                console.log("tags", tags)
                 await postMutation();
                 history.push("/");
               }}
@@ -86,6 +97,6 @@ export default function AddPost(props) {
           </button>
         )}
       </Mutation>
-    </form>
+    </div>
   );
 }

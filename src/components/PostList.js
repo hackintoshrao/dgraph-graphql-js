@@ -2,6 +2,7 @@ import React from "react";
 import Post from "./Post";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import queryString from 'query-string'
 
 /*
 Dgraph's GraphQL layer takes in a GraphQL schema file with the type definitions.
@@ -33,9 +34,10 @@ corresponding to the above GraphQL type.
 4. deletePost(filter: PostFilter!): DeletePostPayload
 
 */
-const GET_BLOG_POSTS = gql`
-  {
-    queryPost {
+
+const GET_FILTERED_BLOG_POSTS = gql`
+  query Post($search: String!){
+    queryPost(filter: {title: {anyoftext: $search}}){
       postID
       title
       text
@@ -50,9 +52,35 @@ const GET_BLOG_POSTS = gql`
   }
 `;
 
-export default function PostList() {
+const GET_ALL_BLOG_POSTS = gql`
+  { queryPost {
+      postID
+      title
+      text
+      numLikes
+      isPublished
+      author {
+        id
+        name
+        dob
+      }
+    }
+  }
+`;
+
+export default function PostList(props) {
+  let params, search = "";
+  if (props.location.search !== "") {
+      params = queryString.parse(props.location.search)
+      search = params.search;  
+  } 
+  let query = GET_FILTERED_BLOG_POSTS;
+  if (search === "") {
+    query = GET_ALL_BLOG_POSTS;
+  }
+
   return (
-    <Query query={GET_BLOG_POSTS}>
+    <Query query={query} variables={{search}}>
       {({ loading, error, data }) => {
         if (loading) {
           return <div>Fetching Posts...</div>;
@@ -62,7 +90,7 @@ export default function PostList() {
         }
         const posts = data.queryPost;
         return (
-          <div className="row">
+          <div className="container">
             {posts.map(post => (
               <Post key={post.postID} post={post} />
             ))}
