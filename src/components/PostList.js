@@ -1,7 +1,7 @@
 import React from "react";
 import Post from "./Post";
 import gql from "graphql-tag";
-import { Query } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks"
 import queryString from 'query-string'
 
 /*
@@ -37,7 +37,7 @@ corresponding to the above GraphQL type.
 
 const GET_FILTERED_BLOG_POSTS = gql`
   query Post($search: String!){
-    queryPost(filter: {title: {anyoftext: $search}}){
+    queryPost(filter:{or: {title: {anyoftext: $search}, or:{text:{anyoftext:$search}}}, tags:{eq:$search}}){
       postID
       title
       text
@@ -79,24 +79,16 @@ export default function PostList(props) {
     query = GET_ALL_BLOG_POSTS;
   }
 
+  const {loading, error, data } = useQuery(query, {variables: { search }, fetchPolicy: "network-only"});
+  if (loading) return "Fetching Posts...";
+  if (error) return `Error: ${error}`;
+  const posts = data.queryPost;
+        
   return (
-    <Query query={query} variables={{search}}>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <div>Fetching Posts...</div>;
-        }
-        if (error) {
-          return <div>Error: {error}</div>;
-        }
-        const posts = data.queryPost;
-        return (
           <div className="container">
             {posts.map(post => (
               <Post key={post.postID} post={post} />
             ))}
           </div>
-        );
-      }}
-    </Query>
-  );
+    );
 }

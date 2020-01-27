@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
+import { useMutation } from "@apollo/react-hooks";
 import { useHistory } from "react-router-dom";
 import TagsInput from 'react-tagsinput'
 import 'react-tagsinput/react-tagsinput.css'
@@ -42,9 +42,12 @@ export default function AddPost(props) {
       id: authorId
     }
   }];
+
   const handleChangeTags = (tagsSet) => {
     setTags(tagsSet)
   }
+
+  const [addPost] = useMutation(POST_MUTATION)
 
   return (
     <div className="container">
@@ -81,22 +84,17 @@ export default function AddPost(props) {
           placeholder="Add your blog post"
         />
       </div>
-      <Mutation mutation={POST_MUTATION} variables={{ post }}>
-        {postMutation => (
           <button
               type="submit"
               className="btn btn-primary"
               onClick={async e => {
                 e.preventDefault();
-                console.log("tags", tags)
-                await postMutation();
+                await addPost({ variables: {post}})
                 history.push("/");
               }}
           >
             Publish
           </button>
-        )}
-      </Mutation>
     </div>
   );
 }
