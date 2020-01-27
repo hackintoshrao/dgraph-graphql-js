@@ -5,7 +5,7 @@ export default function Post({ post }) {
   const history = useHistory();
   const viewPost = (postID) => {
     history.push({
-      pathname: '/post',
+      pathname: '/view',
       search: `?postID=${postID}`
     })
   }

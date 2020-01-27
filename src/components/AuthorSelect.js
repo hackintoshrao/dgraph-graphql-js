@@ -12,8 +12,12 @@ const GET_AUTHORS = gql`
   }
 `;
 
-export default function AuthorSelect({ onChange }) {
-  const [value, setValue] = useState("Select Author");
+export default function AuthorSelect({ onChange, author }) {
+  let authorName = "Select Author"
+  if (author !== "") {
+    authorName = author
+  }
+  const [value, setValue] = useState(authorName);
 
   return (
     <Query query={GET_AUTHORS}>

@@ -26,6 +26,12 @@ const client = new ApolloClient({
         mode: "no-cors"
       }
     });
+  },
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
+    }
   }
 });
 
