@@ -2,8 +2,10 @@ import React from "react";
 
 import PostList from "./PostList";
 import Header from "./Header";
+import PostView from "./ViewPost";
 import CreatePost from "./CreatePost";
 import { Switch, Route } from "react-router-dom";
+import EditPost from "./EditPost";
 
 export default function App() {
   return (
@@ -13,7 +15,18 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={PostList} />
         <Route exact path="/create" component={CreatePost} />
+        <Route exact path="/view" component={PostView} />
+        <Route exact path="/edit" component={EditPost} />
       </Switch>
     </div>
   );
 }
+
+// TODO
+//   Add/Delete Author
+//   Delete Post
+//   Edit/update Post (Like button to add likes)
+//   Add search over more fields
+//   ACL - Try after building master (new Docker image)
+//   How to make "name" as key  
+//   Updating tags not working 

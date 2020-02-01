@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
+import { useMutation } from "@apollo/react-hooks";
 import { useHistory } from "react-router-dom";
-
+import TagsInput from 'react-tagsinput'
+import 'react-tagsinput/react-tagsinput.css'
 import AuthorSelect from "./AuthorSelect";
 
 const POST_MUTATION = gql`
-  mutation addPost($post: PostInput!) {
+  mutation addPost($post: [AddPostInput!]!) {
     addPost(input: $post) {
       post {
         postID
@@ -25,30 +26,38 @@ export default function AddPost(props) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [authorId, setAuthorId] = useState("");
+  const [tags, setTags] = useState([])
 
   const history = useHistory();
 
   const handleChangeAuthor = (authorName, authorId) =>
     setAuthorId(authorId);
 
-  const post = {
+  const post = [{
     title,
     text,
+    tags,
     isPublished: true,
     author: {
       id: authorId
     }
-  };
+  }];
+
+  const handleChangeTags = (tagsSet) => {
+    setTags(tagsSet)
+  }
+
+  const [addPost] = useMutation(POST_MUTATION)
 
   return (
-    <form>
+    <div className="container">
+      <hr />
       <div className="form-group">
-        <label htmlFor="authorSelect">Select Author:</label>
+        <label htmlFor="authorSelect">Author:</label>
         <AuthorSelect onChange={handleChangeAuthor} />
       </div>
-
       <div className="form-group">
-        <label htmlFor="postTitle">Enter Title:</label>
+        <label htmlFor="postTitle">Title:</label>
         <input
           id="postTitle"
           className="form-control"
@@ -59,7 +68,11 @@ export default function AddPost(props) {
         />
       </div>
       <div className="form-group">
-        <label htmlFor="postText">Post Content:</label>
+        <label htmlFor="postTags">Tags:</label>
+        <TagsInput value={tags} onChange={handleChangeTags} />
+      </div>
+      <div className="form-group">
+        <label htmlFor="postText">Content:</label>
         <textarea
           id="postText"
           className="form-control"
@@ -71,21 +84,17 @@ export default function AddPost(props) {
           placeholder="Add your blog post"
         />
       </div>
-      <Mutation mutation={POST_MUTATION} variables={{ post }}>
-        {postMutation => (
           <button
               type="submit"
               className="btn btn-primary"
               onClick={async e => {
                 e.preventDefault();
-                await postMutation();
+                await addPost({ variables: {post}})
                 history.push("/");
               }}
           >
             Publish
           </button>
-        )}
-      </Mutation>
-    </form>
+    </div>
   );
 }
