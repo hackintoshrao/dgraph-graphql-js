@@ -11,3 +11,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.navbar-direction {
+  flex-direction: row-reverse;
+}
+
+.card-pointer {
+  cursor: pointer;
+}
+
+.delete-post {
+  float: right;
+  cursor: pointer;
+}
+
+.edit-post {
+  float: right;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.text-post {
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+
+.tagsset-post {
+  float: right;
+}
+
+.tag-post {
+  margin: 2px;
+}

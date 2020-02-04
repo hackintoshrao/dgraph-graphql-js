@@ -15,7 +15,7 @@ export default withRouter(function Header() {
   return (
     <nav className="navbar navbar-expand">
       <span className="navbar-brand"><h3>Dgraph GraphQL Blog</h3></span>
-      <div className="navbar-collapse" style={{flexDirection: "row-reverse"}}>
+      <div className="navbar-collapse navbar-direction">
         <ul className="navbar-nav">
           <li className="nav-item">
             <Link to="/" className="nav-link">
