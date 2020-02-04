@@ -24,9 +24,5 @@ export default function App() {
 
 // TODO
 //   Add/Delete Author
-//   Delete Post
 //   Edit/update Post (Like button to add likes)
-//   Add search over more fields
 //   ACL - Try after building master (new Docker image)
-//   How to make "name" as key  
-//   Updating tags not working 
