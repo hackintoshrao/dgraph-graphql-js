@@ -1,7 +1,7 @@
 import React from "react";
 import Post from "./Post";
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks"
+import { useQuery, useMutation } from "@apollo/react-hooks"
 import queryString from 'query-string'
 
 /*
@@ -52,6 +52,21 @@ const GET_FILTERED_BLOG_POSTS = gql`
   }
 `;
 
+const ADD_QUESTION = gql`
+mutation {
+  addQuestion(input: {category: {id: "0x3"}, text: "hoho", title: "hehehe"}) {
+    title
+    text
+  }
+}`
+
+const ADD_POST = gql`
+mutation {
+  addPost(input: {title: "hahaha", text: "sadhsdahsadh", author: {username: "apoorv16", email: "apoorv@dgraph.io"}}) {
+      title
+  }
+}`
+
 const GET_ALL_BLOG_POSTS = gql`
   { queryPost {
       postID
@@ -79,6 +94,17 @@ export default function PostList(props) {
     query = GET_ALL_BLOG_POSTS;
   }
 
+  const [addQuestion] = useMutation(ADD_QUESTION)
+  const getQuestion = async () => {
+    const result = await addQuestion();
+    console.log("result", result)
+  }
+  const [addPost] = useMutation(ADD_POST)
+  const getPost = async () => {
+    const result = await addPost();
+    console.log("result", result)
+  } 
+  // getPost();
   const {loading, error, data } = useQuery(query, {variables: { search }, fetchPolicy: "network-only"});
   if (loading) return "Fetching Posts...";
   if (error) return `Error: ${error}`;

@@ -11,8 +11,8 @@ import { useAuth0 } from "../react-auth0-spa";
 import PrivateRoute from "./PrivateRoute"
 
 export default function App() {
-  const { loading } = useAuth0();
-
+  const { loading, user } = useAuth0();
+  console.log("user", user)
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -31,8 +31,3 @@ export default function App() {
     </div>
   );
 }
-
-// TODO
-//   Add/Delete Author
-//   Edit/update Post (Like button to add likes)
-//   ACL - Try after building master (new Docker image)
