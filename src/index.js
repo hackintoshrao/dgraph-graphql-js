@@ -15,6 +15,8 @@ import history from "./utils/history";
 
 // A function that routes the user to the right place
 // after login
+// const { loading, user } = useAuth0();
+  // console.log("user", user)
 const onRedirectCallback = appState => {
   history.push(
     appState && appState.targetUrl
@@ -25,7 +27,7 @@ const onRedirectCallback = appState => {
 
 // 2
 const httpLink = createHttpLink({
-  uri: "http://localhost:8080/graphql"
+  uri: "http://localhost:4000/graphql"
 });
 
 // 3
@@ -62,3 +64,5 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
+// Change schema, how to pass username & email to server . 
+// login to dgraph
