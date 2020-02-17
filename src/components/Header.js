@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useAuth0 } from "../react-auth0-spa"
 
 const Header = () => {
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
   const history = useHistory();
 
   const filterPosts = (filterValue) => {
@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <React.Fragment>
      {isAuthenticated && (<nav className="navbar navbar-expand">
-      <span className="navbar-brand"><h3>Dgraph GraphQL Blog</h3></span>
+     <span className="navbar-brand"><h3>Welcome!</h3></span>
       <div className="navbar-collapse navbar-direction">
         <ul className="navbar-nav">
           <li className="nav-item">
@@ -26,11 +26,11 @@ const Header = () => {
           </li>
           <li className="nav-item">
             <Link to="/create" className="nav-link">
-              Add Article
+              Add Post
             </Link>
           </li>
           <li className="nav-item">
-            <Link onClick={() => logout()}>Log out</Link>
+            <Link to="" onClick={() => logout()} className="nav-link">Log out</Link>
           </li>
           <li className="nav-item">
             <input

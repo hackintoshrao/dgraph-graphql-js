@@ -1,23 +1,52 @@
+# type Author {
+#         id: ID!
+#         name: String! @search(by: [hash, trigram])
+#         dob: DateTime @search
+#         reputation: Float @search
+#         posts: [Post!] @hasInverse(field: author)
+# }
+# type Post {
+#         postID: ID!
+#         title: String! @search(by: [term, fulltext])
+#         text: String @search(by: [fulltext])
+#         tags: [String] @search(by: [exact])
+#         topic: String @search(by: [exact])
+#         numLikes: Int @search
+#         isPublished: Boolean @search
+#         postType: PostType @search
+#         author: Author! @hasInverse(field: posts)
+# }
+# enum PostType {
+#         Fact
+#         Question
+#         Opinion
+# }
+
 type Author {
-        id: ID!
-        name: String! @search(by: [hash, trigram])
-        dob: DateTime @search
-        reputation: Float @search
-        posts: [Post!] @hasInverse(field: author)
-}
-type Post {
-        postID: ID!
-        title: String! @search(by: [term, fulltext])
-        text: String @search(by: [fulltext])
-        tags: [String] @search(by: [exact])
-        topic: String @search(by: [exact])
-        numLikes: Int @search
-        isPublished: Boolean @search
-        postType: PostType @search
-        author: Author! @hasInverse(field: posts)
-}
-enum PostType {
-        Fact
-        Question
-        Opinion
-}
+   username: String! @id
+   email: String!
+   dob: DateTime
+   questions: [Question] @hasInverse(field: author)
+   answers: [Answer] @hasInverse(field: author)
+ }
+
+ interface Post {
+   id: ID!
+   text: String! @search(by: [fulltext])
+   datePublished: DateTime @search
+   likes: Int
+   author: Author!
+ }
+
+ type Question implements Post {
+   title: String! @search(by: [term])
+   answers: [Answer]
+ }
+
+ type Answer implements Post {
+   inAnswerTo: Question!
+ }
+
+ type Comment implements Post {
+   commentsOn: Post!
+ }
