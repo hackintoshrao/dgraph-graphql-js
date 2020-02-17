@@ -4,58 +4,49 @@ import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks"
 import queryString from 'query-string'
 
-/*
-Dgraph's GraphQL layer takes in a GraphQL schema file with the type definitions.
-Then, it autogenerates the queries and mutation APIs for the same.
+// const GET_FILTERED_BLOG_POSTS = gql`
+//   query Post($search: String!){
+//     queryPost(filter:{or: {title: {anyoftext: $search}, or:{text:{anyoftext:$search}}}, tags:{eq:$search}}){
+//       postID
+//       title
+//       text
+//       numLikes
+//       isPublished
+//       author {
+//         id
+//         name
+//         dob
+//       }
+//     }
+//   }
+// `;
 
-The schema.graphql file in the root of the repo contains all the
-GraphQL types which are used as inputs to Dgraph.
-
-From the schema you can see that the GraphQL type for a post look like this,
-
-type Post {
-        postID: ID!
-        title: String! @search(by: [term, fulltext])
-        text: String @search(by: [fulltext])
-        tags: [String] @search(by: [exact])
-        topic: String @search(by: [exact])
-        numLikes: Int @search
-        isPublished: Boolean @search
-        postType: PostType @search
-        author: Author! @hasInverse(field: posts)
-}
-
-Dgraph's GraphQL layer auto-generates the following queries and mutation API's
-corresponding to the above GraphQL type.
-
-1. getPost(postID: ID!): Post
-2. addPost(input: [AddPostInput!]!): AddPostPayload
-3. updatePost(input: UpdatePostInput!): UpdatePostPayload
-4. deletePost(filter: PostFilter!): DeletePostPayload
-
-*/
-
-const GET_FILTERED_BLOG_POSTS = gql`
-  query Post($search: String!){
-    queryPost(filter:{or: {title: {anyoftext: $search}, or:{text:{anyoftext:$search}}}, tags:{eq:$search}}){
-      postID
-      title
+const GET_TOP_POSTS = gql`
+  query {
+    myTopPosts {
       text
-      numLikes
-      isPublished
-      author {
-        id
-        name
-        dob
-      }
+      author {username}
     }
   }
-`;
+`
+
+const ADD_ANSWER = gql`
+mutation {
+  addAnswer(input: {text: "Yo", inAnswerTo: {id: "0x3"}}) {
+    text
+  }
+}`
+
+const ADD_COMMENT = gql`
+mutation {
+  addComment(input: {text: "Yo", commentsOn: {id: "0x3"}}) {
+    text
+  }
+}`
 
 const ADD_QUESTION = gql`
 mutation {
-  addQuestion(input: {category: {id: "0x3"}, text: "hoho", title: "hehehe"}) {
-    title
+  addQuestion(input: {text: "What's up?"}) {
     text
   }
 }`
@@ -66,6 +57,22 @@ mutation {
       title
   }
 }`
+
+const EDIT_POST_TEXT = gql`
+mutation {
+  editPostText(id: "0x7", newText: "sdfsfdfdsdsfdsf") {
+    text
+  }
+}
+`
+
+const LIKE_POST = gql`
+mutation {
+  likePost(id: "0x7", likes: 0) {
+    text
+  }
+}
+`
 
 const GET_ALL_BLOG_POSTS = gql`
   { queryPost {
@@ -84,36 +91,37 @@ const GET_ALL_BLOG_POSTS = gql`
 `;
 
 export default function PostList(props) {
-  let params, search = "";
-  if (props.location.search !== "") {
-      params = queryString.parse(props.location.search)
-      search = params.search;  
-  } 
-  let query = GET_FILTERED_BLOG_POSTS;
-  if (search === "") {
-    query = GET_ALL_BLOG_POSTS;
-  }
+  // let params, search = "";
+  // if (props.location.search !== "") {
+  //     params = queryString.parse(props.location.search)
+  //     search = params.search;  
+  // } 
+  // let query = GET_FILTERED_BLOG_POSTS;
+  // if (search === "") {
+  //   query = GET_ALL_BLOG_POSTS;
+  // }
 
-  const [addQuestion] = useMutation(ADD_QUESTION)
-  const getQuestion = async () => {
-    const result = await addQuestion();
-    console.log("result", result)
-  }
-  const [addPost] = useMutation(ADD_POST)
-  const getPost = async () => {
-    const result = await addPost();
-    console.log("result", result)
-  } 
+  const [addQuestion] = useMutation(ADD_COMMENT)
+  // const [addPost] = useMutation(ADD_POST)
+  // const getPost = async () => {
+  //   const result = await addPost();
+  //   console.log("result", result)
+  // } 
   // getPost();
-  const {loading, error, data } = useQuery(query, {variables: { search }, fetchPolicy: "network-only"});
+
+  const {loading, error, data } = useQuery(GET_TOP_POSTS, {fetchPolicy: "network-only"});
   if (loading) return "Fetching Posts...";
   if (error) return `Error: ${error}`;
-  const posts = data.queryPost;
+  const posts = data.myTopPosts;
+  console.log("data", data.myTopPosts)
         
   return (
           <div className="container">
+            <button onClick = {async e => {
+                e.preventDefault()
+                await addQuestion()}}>hahaha</button>
             {posts.map(post => (
-              <Post key={post.postID} post={post} />
+              <Post key={post.text} post={post} />
             ))}
           </div>
     );
