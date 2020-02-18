@@ -58,4 +58,12 @@ $ yarn install
 $ yarn start
 ```
 
+## Steps for Workshop
+Installation - Docker, ngrok
+Setup - Create Auth0 account and make a application
+
+Frontend --> apollo-server --> Dgraph (general flow of queries & mutations)
+Auth0 --> on signup --> sends mutation to add author directly to dgraph using hooks --> through ngrok
+Every query & mutation gets user from context
+
 ---

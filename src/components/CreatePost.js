@@ -4,20 +4,11 @@ import { useMutation } from "@apollo/react-hooks";
 import { useHistory } from "react-router-dom";
 import TagsInput from 'react-tagsinput'
 import 'react-tagsinput/react-tagsinput.css'
-import AuthorSelect from "./AuthorSelect";
 
-const POST_MUTATION = gql`
-  mutation addPost($post: [AddPostInput!]!) {
-    addPost(input: $post) {
-      post {
-        postID
-        title
-        text
-        author {
-          id
-          name
-        }
-      }
+const ADD_QUESTION = gql`
+  mutation addQuestion($question: AddQuestionInput!) {
+    addQuestion(input: $question) {
+      text
     }
   }
 `;
@@ -25,37 +16,25 @@ const POST_MUTATION = gql`
 export default function AddPost(props) {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
-  const [authorId, setAuthorId] = useState("");
   const [tags, setTags] = useState([])
 
   const history = useHistory();
 
-  const handleChangeAuthor = (authorName, authorId) =>
-    setAuthorId(authorId);
-
-  const post = [{
+  const question = {
     title,
     text,
-    tags,
-    isPublished: true,
-    author: {
-      id: authorId
-    }
-  }];
+    tags
+  };
 
   const handleChangeTags = (tagsSet) => {
     setTags(tagsSet)
   }
 
-  const [addPost] = useMutation(POST_MUTATION)
+  const [addQuestion] = useMutation(ADD_QUESTION)
 
   return (
     <div className="container">
       <hr />
-      <div className="form-group">
-        <label htmlFor="authorSelect">Author:</label>
-        <AuthorSelect onChange={handleChangeAuthor} />
-      </div>
       <div className="form-group">
         <label htmlFor="postTitle">Title:</label>
         <input
@@ -72,7 +51,7 @@ export default function AddPost(props) {
         <TagsInput value={tags} onChange={handleChangeTags} />
       </div>
       <div className="form-group">
-        <label htmlFor="postText">Content:</label>
+        <label htmlFor="postText">Text:</label>
         <textarea
           id="postText"
           className="form-control"
@@ -81,7 +60,7 @@ export default function AddPost(props) {
           value={text}
           onChange={e => setText(e.target.value)}
           type="text"
-          placeholder="Add your blog post"
+          placeholder="Add your question text"
         />
       </div>
           <button
@@ -89,7 +68,7 @@ export default function AddPost(props) {
               className="btn btn-primary"
               onClick={async e => {
                 e.preventDefault();
-                await addPost({ variables: {post}})
+                await addQuestion({ variables: {question}})
                 history.push("/");
               }}
           >

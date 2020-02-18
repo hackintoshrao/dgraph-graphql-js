@@ -2,7 +2,6 @@ import React from "react";
 
 import PostList from "./PostList";
 import Header from "./Header";
-import PostView from "./ViewPost";
 import CreatePost from "./CreatePost";
 import {Router, Switch, Route } from "react-router-dom";
 import EditPost from "./EditPost";
@@ -14,12 +13,13 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { createHttpLink } from "apollo-link-http";
 
 import { useAuth0 } from "../react-auth0-spa";
+import ViewQuestion from "./ViewQuestion";
 
 export default function App() {
   const { isAuthenticated, loading, user } = useAuth0();
   console.log("user", user)
   let headers
-  if (user != undefined) {
+  if (user !== undefined) {
     headers = {"username": user.email, "email": user.email}
   }
   if (loading) {
@@ -54,9 +54,9 @@ export default function App() {
         <Router history={history}>
           <Header />
           <Switch>
-            <PrivateRoute exact path="/" component={PostList} />
+            <PrivateRoute exact component={PostList} path="/" />
             <Route exact path="/create" component={CreatePost} />
-            <Route exact path="/view" component={PostView} />
+            <PrivateRoute exact path="/view" component={ViewQuestion} />
             <Route exact path="/edit" component={EditPost} />
           </Switch>
         </Router>
