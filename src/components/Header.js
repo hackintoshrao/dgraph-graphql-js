@@ -26,11 +26,11 @@ const Header = () => {
           </li>
           <li className="nav-item">
             <Link to="/create" className="nav-link">
-              Add Post
+              Add Question
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="" onClick={() => logout()} className="nav-link">Log out</Link>
+            <button type="button" className="btn btn-link" onClick={() => logout()}>Log out</button>
           </li>
           <li className="nav-item">
             <input

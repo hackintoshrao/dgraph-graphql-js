@@ -1,22 +1,22 @@
 import React from "react";
 import { useHistory } from "react-router-dom"
+import { Card } from 'semantic-ui-react'
+import ViewQuestion from "./ViewQuestion";
 
 export default function Post({ post }) {
   const history = useHistory();
-  const viewPost = (postID) => {
+  const viewQuestion = (questionID) => {
     history.push({
       pathname: '/view',
-      search: `?postID=${postID}`
+      search: `?questionID=${questionID}`
     })
   }
   return (
-    <div className="card col-12 mb-3">
-      <div className="card-body card-pointer" onClick={() => viewPost(post.postID)}>
-        <h5 className="card-title">{post.text} <span style={{float: "right"}} className="badge badge-pill badge-secondary">{post.__typename}</span></h5>
-        <h6 className="card-subtitle mb-2 text-muted">
-          by {post.author.username}
-        </h6>
-      </div>
-    </div>
+    <Card
+      onClick={() => viewQuestion(post.id)}
+      header={post.title}
+      meta={post.author.username}
+      description={post.text}
+    />
   );
 }

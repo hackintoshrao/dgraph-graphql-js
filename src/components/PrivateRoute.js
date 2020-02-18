@@ -1,5 +1,3 @@
-// src/components/PrivateRoute.js
-
 import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { useAuth0 } from "../react-auth0-spa";
@@ -22,7 +20,7 @@ const PrivateRoute = ({ component: Component, path, ...rest }) => {
   const render = props =>
     isAuthenticated === true ? <Component {...props} /> : null;
 
-  return <Route path={path} render={render} {...rest} />;
+  return <Route exact path={path} component={render} {...rest} />;
 };
 
 export default PrivateRoute;
